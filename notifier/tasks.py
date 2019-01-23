@@ -24,7 +24,9 @@ logger = logging.getLogger(__name__)
 DEFAULT_LANGUAGE = 'en'
 
 
-@celery.task(rate_limit=settings.FORUM_DIGEST_TASK_RATE_LIMIT, max_retries=settings.FORUM_DIGEST_TASK_MAX_RETRIES)
+@celery.task(rate_limit=settings.FORUM_DIGEST_TASK_RATE_LIMIT,
+             max_retries=settings.FORUM_DIGEST_TASK_MAX_RETRIES,
+             routing_key=settings.ROUTING_KEY)
 def generate_and_send_digests(users, from_dt, to_dt, language=None):
     """
     This task generates and sends forum digest emails to multiple users in a

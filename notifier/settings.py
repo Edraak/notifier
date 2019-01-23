@@ -193,6 +193,8 @@ CELERYD_PREFETCH_MULTIPLIER = 1
 # before it's replaced with a new one.
 CELERYD_MAX_TASKS_PER_CHILD = int(os.getenv('CELERYD_MAX_TASKS_PER_CHILD', 100))
 
+ROUTING_KEY = os.getenv('NOTIFIER_ROUTING_KEY', '')
+
 LANGUAGE_CODE = os.getenv('NOTIFIER_LANGUAGE', 'en')
 LANGUAGES = (
     ("en", "English"),

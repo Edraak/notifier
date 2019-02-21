@@ -99,7 +99,7 @@ def _time_slice(minutes, now=None):
     >>> e = None
     >>> try:
     ...     _time_slice(14, datetime(2013, 1, 2, 0, 0))
-    ... except AssertionError, e:
+    ... except AssertionError as e:
     ...     pass
     ... 
     >>> e is not None
@@ -118,7 +118,8 @@ def _time_slice(minutes, now=None):
 @celery.task(
     bind=True,
     max_retries=settings.DAILY_TASK_MAX_RETRIES,
-    default_retry_delay=settings.DAILY_TASK_RETRY_DELAY
+    default_retry_delay=settings.DAILY_TASK_RETRY_DELAY,
+    routing_key=settings.ROUTING_KEY
 )
 def do_forums_digests(self):
 
@@ -157,5 +158,5 @@ def do_forums_digests(self):
     try:
         for user_batch in batch_digest_subscribers():
             generate_and_send_digests.delay(user_batch, from_dt, to_dt, language=settings.LANGUAGE_CODE)
-    except UserServiceException, e:
+    except UserServiceException as e:
         raise do_forums_digests.retry(exc=e)
